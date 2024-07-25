@@ -43,6 +43,7 @@ func iterCsvFile(filePath string, condition func([]string) bool) error {
 
 	csvReader := csv.NewReader(f)
 	csvReader.Comma = '\t'
+	csvReader.ReuseRecord = true
 	csvReader.LazyQuotes = true
 
 	for {
