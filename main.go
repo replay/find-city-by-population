@@ -186,16 +186,18 @@ var dataFiles []string
 func findCityWithPopulation(population int) ([]*City, error) {
 	f := &findCityWithPopulationResult{}
 
+	checkCityF := func(record []string) bool {
+		f.checkCity(record, population)
+		return true
+	}
+
 	for _, s := range dataFiles {
 		if len(filepath.Base(s)) != 6 {
 			log.Println("Skipped as file name is not 6 characters long: ", s)
 			continue
 		}
 
-		err := iterCsvFile(s, func(record []string) bool {
-			f.checkCity(record, population)
-			return true
-		})
+		err := iterCsvFile(s, checkCityF)
 		if err != nil {
 			return nil, fmt.Errorf("error while processing file: %s: %w", s, err)
 		}
